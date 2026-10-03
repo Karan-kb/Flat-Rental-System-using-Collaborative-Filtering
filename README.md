@@ -1,66 +1,78 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Flat Rental Engine with Integrated User-Based Collaborative Filtering
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This repository features an academic property rental platform integrated with an **Algorithmic Information Retrieval (IR) Core**. The engine leverages **User-Based Collaborative Filtering (UBCF)** to process multi-dimensional behavior matrices and serve personalized property recommendations to active tenants.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ⚠️ Prototype Status & Research Context
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This repository represents an academic research prototype developed as a **Final Year Undergraduate Capstone Project**. 
+* **Focus:** The primary objective of this codebase is the architectural integration of information retrieval matrices within an enterprise web framework, rather than a production-ready deployment.
+* **Environment Integrity:** Certain third-party integrations, local environment variables, or database dependencies may require manual configuration tuning for absolute local compilation.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🏗️ Algorithmic Core & Mathematical Framework
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Unlike static content filtering based on simple tags, this platform implements behavioral predictive modeling. It analyzes historical tenant interaction vectors to find behavioral proximity between users.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 1. User-Item Interaction Matrix
+The module maps tenant behaviors (views, saves, interactions) into a mathematical **User-Item Matrix ($R$)**, where:
+* Rows represent unique tenant profiles ($U$).
+* Columns represent distinct rental properties ($I$).
+* Missing intersections represent unmapped sparse data points requiring algorithmic prediction.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Angular Proximity Profiles (Pearson Correlation Matrix)
+To compute similarity weights between Tenant $A$ ($u$) and Tenant $B$ ($v$), the system evaluates the directional variance of their behavioral arrays. The calculation targets user groups with highly correlated interaction behaviors:
 
-## Laravel Sponsors
+$$\text{Similarity}(u, v) = \frac{\sum_{i \in I_{uv}} (R_{u,i} - \bar{R}_u)(R_{v,i} - \bar{R}_v)}{\sqrt{\sum_{i \in I_{uv}} (R_{u,i} - \bar{R}_u)^2} \sqrt{\sum_{i \in I_{uv}} (R_{v,i} - \bar{R}_v)^2}}$$
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+* **Behavioral Nearest-Neighbors:** The platform extracts a dynamic cluster of the top $K$ nearest users who share the highest interaction matching index with the active session user.
+* **Inference Pipeline:** Properties highly engaged with by this neighbor-cluster—which the current active user has not yet discovered—are extracted, ranked, and pushed to the client view interface.
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## 🛠️ Data Infrastructure & System Design
 
-## Contributing
+* **Dynamic Matrix Processing Core:** Custom backend logic that transforms standard relational data (MySQL tables) into high-performance vectors for similarity evaluations.
+* **Property State-Machine:** Manages localized listing variations, tenant matching limits, and lease status validations.
+* **Decoupled Service-Repository Layers:** Built using architectural design patterns that isolate core entity records from the recommender algorithm modules.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## ⚙️ Tech Stack & Requirements
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+* **Primary Infrastructure Core:** Laravel (PHP)
+* **Relational Database Management:** MySQL (Optimized Indexes for Matrix Ingestion)
+* **Frontend Design Framework:** Tailwind CSS & Vite Architecture
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🚀 Deployment & Local Environment Setup
 
-## License
+### Step 1: Clone Workspace & Components
+```bash
+git clone https://github.com
+cd Flat-Rental-System-using-Collaborative-Filtering
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Step 2: Initialize Core System Configurations
+Create a clean system configuration workspace and map your server credentials:
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+```
+
+### Step 3: Run Database Relational Migrations
+Construct the physical database schemas, access control vectors, and target lookup tracking indices:
+```bash
+php artisan migrate
+```
+
+### Step 4: Asset Initialization Pipeline
+Compile frontend resource dependencies for client rendering:
+```bash
+npm install
+npm run dev
+```
